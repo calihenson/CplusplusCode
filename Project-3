@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+   //initializing
+   char CodeType;
+   int ShiftSize = 0;
+   int MessageLength = 0;
+   string Message;
+   int E = 0;
+   int D = 0;
+   
+   //inputs & welcoming
+   cout << "Welcome to Cali's Caeser Cipher." << endl << endl;
+   cout << "Enter 'E' to Encode or 'D' to Decode." << endl;
+   cin >> CodeType;
+   
+   //encoding
+   if (CodeType == 'E') {
+       cout << "Enter a shift size between 1 - 25." << endl;
+       cin >> ShiftSize;
+       
+       if ((ShiftSize >= 1) && (ShiftSize <= 25)) {
+       cout << "Enter a message to Encode." << endl << "After encoding, enter '.' to end the program." << endl;
+      while (cin >> Message && Message != ".") {
+       
+       MessageLength = (int)Message.length();
+       
+        for (E = 0; E < MessageLength; ++E){
+            if (isalpha(Message[E])){
+               Message[E] = toupper(Message[E]);
+                  Message[E] += ShiftSize;
+                    if (Message[E] < 'A') Message[E] += 26;
+                    if (Message[E] > 'Z') Message[E] -= 26;
+                    ShiftSize = ShiftSize%25 + 1;
+
+           }
+       }
+        cout << Message << endl;
+      }
+   }
+    if ((ShiftSize < 1) || (ShiftSize > 25))
+           cout << "Error: Unknown ShiftSize." << endl;
+   }
+   
+   
+   //decoding
+   if (CodeType == 'D') {
+       cout << "Enter a shift size between 1 - 25." << endl;
+       cin >> ShiftSize;
+       
+       if ((ShiftSize >= 1) && (ShiftSize <= 25)) {
+       cout << "Enter a message to Decode." << endl << "After decoding, enter '.' to end the program." << endl;
+       while (cin >> Message && Message != ".") {
+       
+       MessageLength = (int)Message.length();
+       
+        for (D = MessageLength; D >= 0; --D){
+            if (isalpha(Message[D])){
+               Message[D] = toupper(Message[D]);
+                  Message[D] -= ShiftSize;
+                   if (Message[D] < 'A') Message[D] += 26;
+                   if (Message[E] > 'Z') Message[D] -= 26;
+                    ShiftSize = ShiftSize%25 + 1;
+
+           }
+       }
+        cout << Message << endl;
+       }
+   };
+       if ((ShiftSize < 1) || (ShiftSize > 25))
+           cout << "Error: Unknown ShiftSize." << endl;
+   }
+   
+   
+   if ((CodeType != 'E') && (CodeType != 'D')) {
+       cout << "Error: Unknown CodeType." << endl;
+   }
+   
+    return 0;
+}
+
+
+
+
+
+
+
+
