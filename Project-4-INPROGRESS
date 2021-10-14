@@ -1,0 +1,426 @@
+#include <cstdlib>
+#include <iostream>
+using namespace std;
+
+// Food constants
+const int CANDY = 0;
+const int STEAK = 1;
+const int POTION = 2;
+const int CANDY_RESTORE = 10;
+const int STEAK_RESTORE = 20;
+const int POTION_RESTORE = 40;
+
+// Creature constants
+const int BUNNY = 0;
+const int DWARF = 1;
+const int TROLL = 2;
+const int BUNNY_DAMAGE = 5;
+const int DWARF_DAMAGE = 10;
+const int TROLL_DAMAGE = 20;
+
+// Other constants
+const int TUITION = 50;
+const int BEER = 10;
+
+// Function prototypes
+void PrintStatus(int gold, int health);
+int FindTreasure(const int max_gold);
+void EatFood(const int food, int &health);
+int FightBattle(const int creature);
+char GetDirection();
+void Exit(int &gold, int &health);
+void Room1(int &gold, int &health);
+void Room2(int &gold, int &health);
+void Room3(int &gold, int &health);
+void Room4(int &gold, int &health);
+void Room5(int &gold, int &health);
+void Room6(int &gold, int &health);
+void Room7(int &gold, int &health);
+
+//------------------------------------------------------------
+// Purpose: To print the player's status
+// Input:   Gold amount, health value
+// Output:  None
+//------------------------------------------------------------
+void PrintStatus(int gold, int health)
+{
+   if (gold > 2 * health)
+      cout << endl << "You are rich with " << gold 
+           << " gold, but your health is only " << health << endl;
+   else if (health > 2 * gold)
+      cout << endl << "You are strong with " << health 
+           << " health, but you only have " << gold << " gold" << endl;
+   else
+      cout << endl << "Your health is " << health 
+           << " and you have " << gold << " gold" << endl;
+}
+
+//------------------------------------------------------------
+// Purpose: To calculate how much treasure is found
+// Input:   Maximum amount of gold possible
+// Output:  Actual amount of gold found
+//------------------------------------------------------------
+int FindTreasure(const int max_gold)
+{
+   int gold = 1 + random() % max_gold;
+   if (gold < max_gold/2)
+      cout << "\nYou find " << gold << " gold pieces on the floor.\n";
+   else
+      cout << "\nYou find a huge mound of " << gold << " gold pieces!\n";
+   return gold;
+}
+
+//------------------------------------------------------------
+// Purpose: To eating food item to restore health.
+// Input:   Food item number between [0..2]
+// Output:  Health value after eating food.
+//------------------------------------------------------------
+void EatFood(const int food, int & health)
+{
+   switch (food)
+   {
+      case CANDY:
+         health = health + CANDY_RESTORE;
+         cout << "\nYou find a half eaten energy bar on the floor " 
+              << "which restores your health by " << CANDY_RESTORE << endl;
+         break;
+      case STEAK:
+         health = health + STEAK_RESTORE;
+         cout << "\nYou find a warm and jucy steak on the table " 
+              << "which restores your health by " << STEAK_RESTORE << endl;
+         break;
+      case POTION:
+         health = health + POTION_RESTORE;
+         cout << "\nYou find a green glowing potion on a shelf " 
+              << "which restores your health by " << POTION_RESTORE << endl;
+         break;
+      default:
+         cout << "\nYour stomach is rumbling, but there is nothing to eat\n";
+         break;
+   }
+
+   // Check maximum value for health
+   if (health > 100) 
+      health = 100;
+}
+
+//------------------------------------------------------------
+// Purpose: To simulate battle with a creature
+// Input:   Creature number between [0..3]
+// Output:  Amount of damage done to your health.
+//------------------------------------------------------------
+int FightBattle(const int creature)
+{
+   int damage = 0;
+   switch (creature)
+   {
+      case BUNNY:
+         damage = 1 + random() % BUNNY_DAMAGE;
+         cout << "\nYou trip over a cute bunny and do " 
+              << damage << " damage to your health.\n";
+         break;
+      case DWARF:
+         damage = 1 + random() % DWARF_DAMAGE;
+         cout << "\nA drunken dwarf hits you with a beer mug and does " 
+              << damage << " damage to your health.\n";
+         break;
+      case TROLL:
+         damage = 1 + random() % TROLL_DAMAGE;
+         cout << "\nAn angry troll kicks you in the rear and does " 
+              << damage << " damage to your health.\n";
+         break;
+      default:
+         cout << "\nIt is ghostly quiet here, you must be alone\n";
+         break;
+   }
+   return damage;
+}
+
+//------------------------------------------------------------
+// Purpose: To get direction from user
+// Input:   None
+// Output:  Character code for N,S,E,W direction
+//------------------------------------------------------------
+char GetDirection()
+{
+   cout << "\nWhat direction would you like to go (N,S,E,W): ";
+   char direction;
+   cin >> direction;
+   direction = toupper(direction);
+   while ((direction != 'N') && (direction != 'S') &&
+          (direction != 'E') && (direction != 'W'))
+   {
+      cout << "Sorry, You can not go that way...\n";
+      cout << "What direction would you like to go (N,S,E,W): ";
+      cin >> direction;
+      direction = toupper(direction);
+   }
+   return direction;
+}
+
+//------------------------------------------------------------
+// Purpose: To find the cave exit
+// Input:   The gold and health variables
+// Output:  None
+//------------------------------------------------------------
+void Exit(int &gold, int &health)
+{
+   cout << "\n------------------------------------------------------------\n";
+   cout << "\nYou crawl out of the cave and blink your eyes to\n";
+   cout << "adjust to the bright sunshine. Congratulations,\n"; 
+   cout << "you made it out of the cave with " << health << " health!\n";
+
+   if (gold >= TUITION)
+   {
+      cout << "\nYou empty your pockets and discover " << gold << " gold coins.\n";
+      cout << "This will pay for tuition next semester!!!\n";
+   }
+   else if (gold >= BEER)
+   {
+      cout << "\nYou notice that you have " << gold << " gold coins in your pocket.\n";
+      cout << "This will pay for beer and pizza next semester!!!\n";
+   }
+   else 
+   {
+      cout << "\nYou check your pocket and find " << gold << " gold coins.\n";
+      cout << "Exploring caves sure is a hard way to make money!!!\n";
+   }
+   
+   // Leave program
+   exit(0);
+}
+
+//------------------------------------------------------------
+// Purpose: To visit a room in the cave
+// Input:   The gold and health variables
+// Output:  None
+//------------------------------------------------------------
+void Room1(int &gold, int &health)
+{
+   char Direction;
+   cout << "\n------------------------------------------------------------\n";
+   cout << "\nYou just stumbled into a hole in the ground. When you\n";
+   cout << "shake off the dirt and leaves you realize you are in\n";
+   cout << "the entrance to a cave that looks man made. As you\n";
+   cout << "take a look around, you decide it might be fun to explore.\n";
+
+   PrintStatus(gold, health);
+
+   Direction = GetDirection();
+   while (Direction == 'N') {
+       cout << "You cannot go this direction. Try again." << endl;
+       Direction = GetDirection();
+   }
+   if (Direction == 'E') Room4(gold, health);
+   if (Direction == 'S') Room2(gold, health);
+   if (Direction == 'W') Room3(gold, health);
+
+}
+
+//------------------------------------------------------------
+// Purpose: To visit a room in the cave
+// Input:   The gold and health variables
+// Output:  None
+//------------------------------------------------------------
+void Room2(int &gold, int &health)
+{
+   char Direction;
+   cout << "\n------------------------------------------------------------\n";
+   cout << "\nYou have entered the throne room. In the middle\n";
+   cout << "of the room there is a giant wooden throne with\n";
+   cout << "intricate carvings. As you take a closer look at the\n";
+   cout << "carvings, you see that they show trolls chasing humans.\n";
+   cout << "Hmmm, maybe this is not a great place to stop for a rest.\n";
+
+   PrintStatus(gold, health);
+
+   Direction = GetDirection();
+   if (Direction == 'N') Room1(gold, health);
+   while (Direction == 'E') {
+       cout << "You cannot go this direction. Try again." << endl;
+       Direction = GetDirection();
+   }
+   if (Direction == 'S') Room5(gold, health);
+   if (Direction == 'W') Room3(gold, health);
+   
+}
+
+//------------------------------------------------------------
+// Purpose: To visit a room in the cave
+// Input:   The gold and health variables
+// Output:  None
+//------------------------------------------------------------
+void Room3(int &gold, int &health)
+{
+   char Direction;
+   int creature, Damage;
+   cout << "\n------------------------------------------------------------\n";
+   cout << "\nYou have entered an abandoned pub. There are piles\n";
+   cout << "of dirty dishes and empty beer mugs all over the place.\n";
+   cout << "You hear someone coming and duck behind a table to hide.\n";
+   
+   cout << "Choose a number [0, 1, 2, 3] to decide your fate.\n";
+   cin >> creature;
+   Damage = FightBattle(creature);
+   health = health - Damage;
+
+   PrintStatus(gold, health);
+
+   Direction = GetDirection();
+   if (Direction == 'N') Room1(gold, health);
+   if (Direction == 'E') Room2(gold, health);
+   while (Direction == 'S') {
+       cout << "You cannot go this direction. Try again." << endl;
+       Direction = GetDirection();
+   }
+   while (Direction == 'W') {
+       cout << "You cannot go this direction. Try again." << endl;
+       Direction = GetDirection();
+   }
+
+}
+
+//------------------------------------------------------------
+// Purpose: To visit a room in the cave
+// Input:   The gold and health variables
+// Output:  None
+//------------------------------------------------------------
+void Room4(int &gold, int &health)
+{
+   char Direction;
+   cout << "\n------------------------------------------------------------\n";
+   cout << "\nYou have entered a huge storage room filled with empty boxes.\n";
+   cout << "Looking at the side of one box, you see 'ACME troll food'.\n";
+   cout << "You better get out of here before you end up on the menu.\n";
+
+   PrintStatus(gold, health);
+
+   Direction = GetDirection();
+   while (Direction == 'N') {
+       cout << "You cannot go this direction. Try again." << endl;
+       Direction = GetDirection();
+   }
+   while (Direction == 'E') {
+       cout << "You cannot go this direction. Try again." << endl;
+       Direction = GetDirection();
+   }
+   if (Direction == 'S') Room1(gold, health);
+   if (Direction == 'W') Room5(gold, health);
+
+}
+
+//------------------------------------------------------------
+// Purpose: To visit a room in the cave
+// Input:   The gold and health variables
+// Output:  None
+//------------------------------------------------------------
+void Room5(int &gold, int &health)
+{
+   char Direction;
+   int Found;
+   int max_gold = 50;
+   cout << "\n------------------------------------------------------------\n";
+   cout << "\nYou have walked into an old kitchen, full of old\n";
+   cout << "packages, pots, and pans. Maybe you can find\n";
+   cout << "some food here.\n";
+   
+   Found = FindTreasure(max_gold);
+   gold = gold + Found;
+    
+   PrintStatus(gold, health);
+
+   Direction = GetDirection();
+   if (Direction == 'N') Room4(gold, health);
+   if (Direction == 'E') Room6(gold, health);
+   if (Direction == 'S') Room2(gold, health);
+   if (Direction == 'W') Exit(gold, health);
+    
+}
+
+//------------------------------------------------------------
+// Purpose: To visit a room in the cave
+// Input:   The gold and health variables
+// Output:  None
+//------------------------------------------------------------
+void Room6(int &gold, int &health)
+{
+   char Direction;
+   int creature, Damage;
+   cout << "\n------------------------------------------------------------\n";
+   cout << "\nYou have walked into what looks like a\n";
+   cout << "bedroom. Upon taking a few steps into the room, you\n";
+   cout << "notice something in the bed. You better hide before\n";
+   cout << "waking the creature.\n";
+   
+   cout << "Choose a number [0, 1, 2, 3] to decide your fate.\n";
+   cin >> creature;
+   Damage = FightBattle(creature);
+   health = health - Damage;
+
+   PrintStatus(gold, health);
+    
+   Direction = GetDirection();
+   while (Direction == 'N') {
+       cout << "You cannot go this direction. Try again." << endl;
+       Direction = GetDirection();
+   }
+   while (Direction == 'E') {
+       cout << "You cannot go this direction. Try again." << endl;
+       Direction = GetDirection();
+   }
+   if (Direction == 'S') Room7(gold, health);
+   if (Direction == 'W') Room5(gold, health);
+    
+}
+
+//------------------------------------------------------------
+// Purpose: To visit a room in the cave
+// Input:   The gold and health variables
+// Output:  None
+//------------------------------------------------------------
+void Room7(int &gold, int &health)
+{
+   char Direction;
+   int Found;
+   int max_gold = 100;
+   cout << "\n------------------------------------------------------------\n";
+   cout << "\nYou have entererd an old Wine cellar. You walk around\n";
+   cout << "looking for some substanence. While looking for leftover wine,\n";
+   cout << "you see a glimpse of something shiny.\n";
+
+   Found = FindTreasure(max_gold);
+   gold = gold + Found;
+
+   PrintStatus(gold, health);
+    
+   Direction = GetDirection();
+   if (Direction == 'N') Room6(gold, health);
+   while (Direction == 'E') {
+       cout << "You cannot go this direction. Try again." << endl;
+       Direction = GetDirection();
+   }
+   if (Direction == 'S') Exit(gold, health);
+   while (Direction == 'W') {
+       cout << "You cannot go this direction. Try again." << endl;
+       Direction = GetDirection();
+   }
+    
+}
+
+
+//------------------------------------------------------------
+// Purpose: The main program
+// Input:   None
+// Output:  None
+//------------------------------------------------------------
+int main()
+{
+   // Initialize game
+   int gold = 0;
+   int health = 100;
+   srandom(time(NULL));
+
+   Room1(gold, health);
+
+   return 0;
+}
