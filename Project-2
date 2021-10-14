@@ -1,0 +1,119 @@
+#include <stdio.h>
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+
+using namespace std;
+
+int main()
+{
+//initialize
+int Meal = 0;
+int Drink = 0;
+int Size = 0;
+float SubTotal = 0;
+float Total = 0;
+string userMeal;
+string userDrink;
+string userSize;
+
+cout << "Welcome to the Express Lane." << endl;
+
+// Placing the order for your Meal
+cout << "Please type in the corresponding numbers for your order." << endl << endl;
+cout << "(1) CheeseBurger ($5.99)" << endl << "(2) FishSandwich ($6.99)" << endl << "(3) ChickenSandwich ($6.49)" << endl << "(4) ChickenNuggets ($5.99)" << endl << "(5) Salad ($6.99)" << endl;
+
+cin >> Meal;
+
+switch (Meal)
+{
+    default:
+       cout << "Error: Please restate your order.";
+       return 0;
+    case 1:
+       cout << "CheeseBurger" << endl << endl;
+       SubTotal = 5.99;
+       userMeal = "CheeseBurger";
+break;
+    case 2:
+       cout << "FishSandwich" << endl << endl;
+       SubTotal = 6.99;
+       userMeal = "FishSandwich";
+break;
+    case 3:
+       cout << "ChickenSandwich" << endl << endl;
+       SubTotal = 6.49;
+       userMeal = "ChickenSandwich";
+break;
+    case 4:
+       cout << "ChickenNuggets" << endl << endl;
+       SubTotal = 5.99;
+       userMeal = "ChickenNuggets";
+break;
+    case 5:
+       cout << "Salad" << endl << endl;
+       SubTotal = 6.99;
+       userMeal = "Salad";
+break;
+}
+
+//Placing order for your Drink
+cout << "Please type in the corresponding number for your drink." << endl << endl;
+cout << "(1) Water" << endl << "(2) CocaCola" << endl << "(3) DrPepper" << endl << "(4) Sprite" << endl;
+
+cin >> Drink;
+
+switch (Drink) {
+    default:
+       cout << "Error: Please restart your order." << endl;
+       return 0;
+    case 1:
+       cout << "Water" << endl << endl;
+       userDrink = "Water";
+break;
+    case 2:
+       cout << "CocaCola" << endl << endl;
+       userDrink = "CocaCola";
+break;
+    case 3:
+       cout << "DrPepper" << endl << endl;
+       userDrink = "DrPepper";
+break;
+    case 4:
+       cout << "Sprite" << endl << endl;
+       userDrink = "Sprite";
+break;
+}
+
+//Deciding Size of the Meal
+cout << "Please type in the corresponding number for your Size." << endl << endl;
+cout << "(1) Small (+$0.00)" << endl << "(2) Medium (+$1.00)" << endl << "(3) Large (+$2.00)" << endl;
+
+cin >> Size;
+
+switch (Size) {
+    default:
+       cout << "Error: Please restart your order." << endl;
+       return 0;
+    case 1:
+       cout << "Small" << endl << endl;
+       userSize = "Small";
+break;
+    case 2:
+       cout << "Medium" << endl << endl;
+       SubTotal = SubTotal + 1.00;
+       userSize = "Medium";
+break;
+    case 3:
+       cout << "Large" << endl << endl;
+       SubTotal = SubTotal + 2.00;
+       userSize = "Large";
+break;
+}
+
+//output cost
+Total = SubTotal * 1.05;
+cout << "Thank you for ordering." << endl << "You ordered a " << userSize << " " << userMeal << " with a " << userDrink << "." << endl << "SubTotal = " << SubTotal << endl << "Total = " << fixed << setprecision(2) << Total << endl;
+
+    return 0;
+}
