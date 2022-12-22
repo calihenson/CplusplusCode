@@ -1,3 +1,4 @@
+
 #include <cstdlib>
 #include <iostream>
 using namespace std;
@@ -304,8 +305,8 @@ void Room4(int &gold, int &health)
        cout << "You cannot go this direction. Try again." << endl;
        Direction = GetDirection();
    }
-   if (Direction == 'S') Room1(gold, health);
-   if (Direction == 'W') Room5(gold, health);
+   if (Direction == 'S') Room5(gold, health);
+   if (Direction == 'W') Room1(gold, health);
 
 }
 
@@ -318,6 +319,7 @@ void Room5(int &gold, int &health)
 {
    char Direction;
    int Found;
+   int food;
    int max_gold = 50;
    cout << "\n------------------------------------------------------------\n";
    cout << "\nYou have walked into an old kitchen, full of old\n";
@@ -326,6 +328,10 @@ void Room5(int &gold, int &health)
    
    Found = FindTreasure(max_gold);
    gold = gold + Found;
+   
+   cout << "You found food in an old pot! I guess someone did not finish " << endl;
+   cout << "their dinner." << endl;
+   EatFood(CANDY, health);
     
    PrintStatus(gold, health);
 
@@ -383,6 +389,7 @@ void Room7(int &gold, int &health)
    char Direction;
    int Found;
    int max_gold = 100;
+   int food;
    cout << "\n------------------------------------------------------------\n";
    cout << "\nYou have entererd an old Wine cellar. You walk around\n";
    cout << "looking for some substanence. While looking for leftover wine,\n";
@@ -390,6 +397,10 @@ void Room7(int &gold, int &health)
 
    Found = FindTreasure(max_gold);
    gold = gold + Found;
+   
+   cout << "You found food on the ground! Yum! What did you find? Enter a number [0, 1, 2]." << endl;
+   cin >> food;
+   EatFood(food, health);
 
    PrintStatus(gold, health);
     
@@ -424,3 +435,4 @@ int main()
 
    return 0;
 }
+
